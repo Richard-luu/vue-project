@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <NavBar></NavBar>
+    <NarBar></NarBar>
   </div>
 </template>
 
 <script>
 //  引入组件
-import NavBar from './components/NavBar/index';
+import NarBar from './components/NavBar/index';
 
 export default {
   name: 'App',
 
   components: {
-    NavBar
+    NarBar
   }
-};
+}
 </script>
 
 <style lang="scss">

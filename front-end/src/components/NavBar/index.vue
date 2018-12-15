@@ -65,6 +65,7 @@ export default {
       height: px2rem(22);
       background-size: 100%;
     }
+  }
 
     .films {
       .img {
@@ -94,6 +95,5 @@ export default {
     .z-act {
       color: #ff5f16;
     }
-  }
 }
 </style>
