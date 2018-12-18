@@ -19,7 +19,7 @@ router.get('/list',function(req,res){
       //  直接返回错误
       console.log('数据库连接失败',err);
       res.json({
-        code: 1,
+        code: 0,
         msg: '网络异常，请稍后重试'
       });
     } else {
@@ -76,12 +76,12 @@ router.get('/list',function(req,res){
         if (err) {
           console.log(err);
           res.json({
-            code: 1,
+            code: 0,
             msg: '错误'
           });
         } else {
           res.json({
-            code: 0,
+            code: 1,
             msg: 'OK',
             data: {
               films: result.data,
@@ -94,6 +94,41 @@ router.get('/list',function(req,res){
 
     }
   });
+});
+
+//根据影片ID获取相应详细信息
+router.get('/filmsDetail',function(req ,res){
+  let filmId = req.query.filmId;
+
+  MogoClient.connect(url,{ useNewUrlParser: true }, function(err,client){
+    if(err){
+      //连接数据库失败，直接返回错误
+      res.json({
+        code: 0,
+        msg: '网络异常，请稍后重试'
+      });
+      } else {
+
+        var db = client.db('film');
+
+        db.collection('films').find({filmId: Number(filmId)}).toArray(function (err,data) {
+          if (err) {
+            res.json({
+              code: 0,
+              msg: '出错啦'
+            });
+          } else {
+            res.json({
+              code: 1,
+              msg: '查询成功',
+              data: data
+            });
+          }
+          client.close();
+        });
+    }
+  });
+
 });
 
 module.exports = router;

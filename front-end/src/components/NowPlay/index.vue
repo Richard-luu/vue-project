@@ -4,7 +4,8 @@
     <ul>
       <li
         v-for = "(item, index) in films"
-        :key = "index">
+        :key = "index"
+        @click="goDetail(item.filmId)">
         <div class="img">
           <img :src="item.poster" alt="">
           </div>
@@ -35,8 +36,14 @@
 
 <script>
 import axios from 'axios';
+import { Indicator } from 'mint-ui';
+
 export default {
   name: 'NowPlay',
+
+  components: {
+    Indicator
+  },
 
   data () {
     return {
@@ -54,6 +61,7 @@ export default {
      * 获取影片
     */
     getFilms () {
+      Indicator.open();
       // localhost:3000/api/film/list
       axios.get('/api/film/list', {
         params: {
@@ -62,6 +70,7 @@ export default {
           pageSize: this.pageSize
         }
       }).then((response) => {
+        Indicator.close();
         // PS: res 不单单包含后台给的数据，还有一些个额外的东西。
         // console.log(res);
         let result = response.data;
@@ -74,7 +83,7 @@ export default {
           this.loadMoreText = '别拉啦，没有更多。';
         }
 
-        if (result.code === 0) {
+        if (result.code === 1) {
           this.films = this.films.concat(result.data.films);
         } else {
           alert(result.msg);
@@ -105,6 +114,21 @@ export default {
         this.pageNum++;
         this.getFilms();
       }
+    },
+
+    /**
+     * 去详情页面
+     * @param {String} id 影片ID
+     */
+    goDetail (id) {
+      this.$router.push({
+        // path: '/film/' + id,
+        // path: `/film/${id}`,
+        name: 'filmDetail',
+        params: {
+          filmId: id
+        }
+      })
     }
   },
 

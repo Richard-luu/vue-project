@@ -14,8 +14,8 @@
             <span class="type">{{ item.filmType.name }}</span>
           </div>
           <div>
-            <span class="label">观众评分</span>
-            <span class="grade">{{ item.grade }}</span>
+            <!-- <span class="label">观众评分</span>
+            <span class="grade">{{ item.grade }}</span> -->
           </div>
           <div class="mainActor">
             <span class="label">主演： {{ actorsList(item.actors) }}</span>
@@ -60,7 +60,8 @@ export default {
         params: {
           // get 请求的参数要放在这个里面传递
           pageNum: this.pageNum,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          type: 2
         }
       }).then((response) => {
         // PS: res 不单单包含后台给的数据，还有一些个额外的东西。
@@ -75,7 +76,7 @@ export default {
           this.loadMoreText = '别拉啦，没有更多。';
         }
 
-        if (result.code === 0) {
+        if (result.code === 1) {
           this.films = this.films.concat(result.data.films);
         } else {
           alert(result.msg);

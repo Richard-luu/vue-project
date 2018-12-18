@@ -2,14 +2,14 @@
 <template>
   <ul class="nav-bar">
   <router-link
-    v-for="(item,index) in bars"
-    :key="index"
-    :class="item.id"
-    :to="{name:item.id}"
-    tag="li"
-    active-class="z-act">
-    <i class="img"></i>
-    <span v-text="item.name"></span>
+    v-for = "(item,index) in bars"
+    :key = "index"
+    :class = "item.id"
+    :to = "{ path:item.path }"
+    tag = "li"
+    active-class = "z-act">
+    <i class = "img"></i>
+    <span v-text = "item.name"></span>
     </router-link>
   </ul>
 </template>
@@ -22,15 +22,18 @@ export default {
     return {
       bars: [
         {
-          id: 'films',
+          id: 'nowPlaying',
+          path: '/films',
           name: '电影'
         },
         {
           id: 'cinemas',
+          path: '/cinemas',
           name: '影院'
         },
         {
           id: 'center',
+          path: '/center',
           name: '我的'
         }
       ]
@@ -67,11 +70,11 @@ export default {
     }
   }
 
-    .films {
+    .nowPlaying {
       .img {
         background-image: url('./images/films.png');
       }
-      &.z-act .img {
+      .z-act .img {
         background-image: url('./images/films_on.png');
       }
     }

@@ -20,7 +20,7 @@ import NavBar from '../components/NavBar/index';
 export default {
   name: 'Home',
 
-  compoenents: {
+  components: {
     NavBar
   }
 }

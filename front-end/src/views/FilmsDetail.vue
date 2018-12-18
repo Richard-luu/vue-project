@@ -1,59 +1,113 @@
 <template>
   <div class="film-detail">
+
+    <mt-header fixed>
+      <router-link to="/" slot="left" tag="div" class="returnBack">
+        <mt-button icon="back" class="iconback"></mt-button>
+      </router-link>
+    </mt-header>
+
+    <div
+    v-for="(item, index) in films"
+    :key="index"
+    >
+
     <div class="film-poster">
-      <img src="https://pic.maizuo.com/usr/movie/f713d0f85512087679ac951e8565d187.jpg?x-oss-process=image/quality,Q_70" alt="">
+      <img :src="item.poster" alt="">
     </div>
 
-    <div class="film-detail">
+    <div class="film-detailmore">
       <div class="col">
         <div class="film-name">
-          <span class="name">{{ filmName }}</span>
-          <span class="item">3D</span>
+          <span class="name">{{ item.name }}</span>
+          <!-- item.filmType && item.filmType.name 意思是存在item.filmType再去找.name -->
+          <span class="item">{{item.filmType && item.filmType.name }}</span>
         </div>
         <div class="film-grade">
-          <span class="grade">7.2</span>
+          <span class="grade">{{ item.grade }}</span>
           <span class="grade-text">分</span>
         </div>
       </div>
 
-      <div class="film-category grey-text">动作 | 奇幻 | 冒险</div>
+      <div class="film-category grey-text">{{item.category}}</div>
       <div class="film-premiere-time grey-text">
-        2018-12-07上映
+        {{premiereAt}}
       </div>
       <div class="film-nation-runtime grey-text">
-        美国   澳大利亚  | 143分钟
+        {{item. nation}} | {{item.runtime}}分钟
       </div>
       <div class="film-synopsis grey-text">
-        本片由杰森·莫玛领衔主演，讲述半人半亚特兰蒂斯血统的亚瑟·库瑞踏上永生难忘的征途——他不但需要直面自己的特殊身世，更不得不面对生而为王的考验：自己究竟能否配得上“海王”之名。
+        {{item.synopsis}}
       </div>
       <div class="toggle">
         <i class="iconfont icon-xiala"></i>
       </div>
     </div>
 
-    <router-link to="/film/9898">我要看猫王</router-link>
+    <div class="film-actor">
+      <div> <span class="actors">职演人员</span></div>
+     <div class="actorlist">
+       <ul class="actorul">
+         <li v-for="(itemmsg,i) in item.actors" :key="i">
+           <div><img :src="itemmsg.avatarAddress" alt=""></div>
+           <div class="iname"><span>{{itemmsg.name}}</span></div>
+           <div class="role"><span>{{itemmsg.role}}</span></div>
+         </li>
+       </ul>
+     </div>
+    </div>
+    <div class="movieZhao">
+      <div><span>剧照</span></div>
+    </div>
+  </div>
+    <router-link to="/film/9898" tag="div" class="tobuy">购票</router-link>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import { Header, Button } from 'mint-ui';
+
 export default {
   name: 'FilmDetail',
 
+  components: {
+    'mt-header': Header,
+    'mt-button': Button
+  },
+
   data () {
     return {
-      filmName: ''
+      films: [],
+      premiereAt: ''
     }
   },
 
   methods: {
     getFilmDetail () {
-      setTimeout(() => {
-        if (this.$route.params.filmId === 4469) {
-          this.filmName = '海王';
-        } else {
-          this.filmName = '猫王';
+      let filmId = this.$route.params.filmId;
+      axios.get('api/film/filmsDetail', {
+        params: {
+          filmId: filmId
         }
-      }, 2000);
+      }).then((response) => {
+        let result = response.data;
+        if (result.code === 1) {
+          // this.films = result.data;
+          // console.log(typeof result.data);
+          var a = result.data.map(function (item, index) {
+            return item
+          });
+          this.films.push(a[0]);
+          let da = new Date();
+          let year = da.getFullYear();
+          let month = da.getMonth();
+          let date = da.getDate();
+          this.premiereAt = (result.data.premiereAt = [year, month, date].join('-'));
+        } else {
+          alert(result.msg);
+        }
+      });
     }
   },
 
@@ -61,15 +115,15 @@ export default {
     this.getFilmDetail();
   },
 
-  beforeRouteEnter (to,from,next) {
+  beforeRouteEnter (to, from, next) {
     next();
   },
 
-  beforeRouteUpdate (to,from,next) {
+  beforeRouteUpdate (to, from, next) {
     next();
   },
 
-  beforeRouteLeave (to,from,next) {
+  beforeRouteLeave (to, from, next) {
     next();
   }
 }
@@ -82,15 +136,19 @@ export default {
   flex: 1;
   overflow-y: auto;
 
+  // 海报
   .film-poster {
+    width: 100%;
     height: px2rem(210);
+
     img {
       width: 100%;
       height: 100%;
     }
   }
 
-  .film-detail {
+  // 影片详细
+  .film-detailmore {
     padding: px2rem(15);
     padding-top: px2rem(12);
     background-color: #fff;
@@ -148,7 +206,9 @@ export default {
     .film-synopsis {
       margin-top: px2rem(8);
       overflow: hidden;
-      &.hide {
+      font-size: px2rem(13);
+
+      .hide {
         height: px2rem(40);
       }
     }
@@ -162,5 +222,113 @@ export default {
       }
     }
   }
+
+  // 职演人员
+  .film-actor{
+    border-top: px2rem(10) solid #f4f4f4;
+    width: 100%;
+
+    .actors{
+    font-size: px2rem(16);
+    text-align: left;
+    color: #191a1b;
+    padding: px2rem(15);
+    line-height:  px2rem(50);
+    }
+
+    .iname{
+      margin-top: px2rem(10);
+      font-size: px2rem(12);
+      color: #191a1b;
+    }
+
+    .role{
+      font-size: px2rem(10);
+      color: #797d82;
+      line-height:  px2rem(10);
+    }
+
+    .actorlist{
+      overflow-x: hidden;
+       padding: px2rem(5) px2rem(15) px2rem(15) px2rem(15);
+
+      .actorul{
+       display: flex;
+       width: 100%;
+       overflow: auto;
+
+       li{
+         width: 85%;
+         margin-left: px2rem(10);
+         text-align: center;
+
+        img{
+          width: px2rem(85);
+          height: px2rem(85);
+        }
+      }
+      li:first-child{
+        margin-left: 0;
+      }
+    }
+    }
+  }
+
+  // 购票
+  .tobuy{
+    background-color:  #ff5f16;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: px2rem(49);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: px2rem(16);
+    line-height: px2rem(49);
+  }
+
+  // 剧照
+  .movieZhao{
+    border-top: px2rem(10) solid #f4f4f4;
+    div{
+      span{
+        font-size: px2rem(16);
+        text-align: left;
+        color: #191a1b;
+        padding: px2rem(15);
+        line-height:  px2rem(50);
+      }
+    }
+  }
+}
+
+.mint-header{
+  background: #ccc;
+  height: px2rem(50);
+  width: px2rem(50);
+  border-radius: 50%;
+  opacity: 0.5;
+
+  .returnBack {
+    width: 100%;
+    height: 100%;
+    // font-size: px2rem(20);
+  }
+}
+
+.iconback {
+  width: 100%;
+  height: 100%;
+  // font-size: px2rem(20);
+}
+
+.mintui {
+  font-family:"mintui" !important;
+  font-size: px2rem(20);
+}
+
+.mintui-back:before{
+   font-size: px2rem(20);
 }
 </style>
