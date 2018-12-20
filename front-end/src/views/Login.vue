@@ -8,18 +8,20 @@
       <div>
         <form action="#">
           <div class="phone">
-            <input type="tel" maxlength="13" placeholder="手机号" class="input-control">
+            <input type="tel" maxlength="13" placeholder="手机号" class="input-control" v-model="phoneInput">
             <div class="getSmsCode">
                 获取验证码
             </div>
           </div>
 
           <div class="form-group">
-            <input placeholder="验证码" class="input-control">
+            <input placeholder="验证码" class="input-control" v-model="codeInput">
           </div>
 
-          <div class="submit login-btn">
-            <span>登录</span>
+          <div class="submit">
+            <button :disabled="checkInput" @click="loginTo" @keyup.13="loginTo">
+              <span :class="checkInput?'':'loginOp'">登录</span>
+            </button>
           </div>
         </form>
       </div>
@@ -28,8 +30,55 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  name: 'Login'
+  name: 'Login',
+
+  data () {
+    return {
+      phoneInput: '',
+      codeInput: ''
+    }
+  },
+
+  computed: {
+    checkInput () {
+      if (this.phoneInput && this.codeInput) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  },
+
+  methods: {
+    loginTo () {
+      axios.get('static/api/users.json', {
+        params: {
+          phone: this.phoneInput,
+          code: this.codeInput
+        }
+      }).then(res => {
+        let result = res.data;
+        if (result.phone === this.phoneInput && result.code === this.codeInput) {
+          localStorage.setItem('userName', '张三');
+          // console.log(this.$route.query);
+
+          // let redirect = this.$route.query.redirect;
+          // this.$router.push(redirect);
+          this.$router.go(-1);
+          // this.$router.replace('/center');
+          // this.$router.replace(this.$route.query.redirect);
+        } else {
+          // console.log(this.$router);
+          alert('用户名或密码错误');
+          // this.$router.push('/login');
+          this.$router.go(0);
+        }
+      });
+    }
+  }
 }
 </script>
 
@@ -81,14 +130,21 @@ export default {
     font-size: px2rem(16);
     margin: px2rem(70) px2rem(25) 0;
     border-radius: px2rem(3);
-    text-align: center;
-    background-color: #ff5f16;
     height: px2rem(44);
-    color: #fff;
-    border: none;
 
-    span {
-      opacity: 0.3;
+    button {
+      width: 100%;
+      height: 100%;
+      line-height: px2rem(45);
+      font-size: px2rem(16);
+      background-color: #ff5f16;
+      text-align: center;
+      color: #fff;
+      border: none;
+
+      span {
+        opacity: 0.3;
+      }
     }
   }
 
@@ -102,6 +158,10 @@ export default {
     border: 0;
     outline-width: 0;
   }
+}
+
+.loginOp {
+  opacity: 1 !important;
 }
 
 </style>

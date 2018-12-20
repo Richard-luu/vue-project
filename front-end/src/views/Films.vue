@@ -4,10 +4,9 @@
      <Banner></Banner>
 
     <!-- 定位城市 -->
-    <div class="city-fixed">
-      <span>{{ curCity }}</span>
-      <i class="iconfont icon-xiala"></i>
-    </div>
+    <router-link class="city-fixed" tag="div" to="/city">
+      <span>{{ curCity }} v</span>
+    </router-link>
     <!-- /定位城市 -->
 
     <!-- tab-bar -->
@@ -116,6 +115,10 @@ export default {
   text-align: center;
   padding: 0 px2rem(5);
   background: rgba(0, 0, 0, 0.2);
+  span {
+    color: #fff;
+    font-size: px2rem(13);
+  }
 }
 
 .tab-bar-wrapper {

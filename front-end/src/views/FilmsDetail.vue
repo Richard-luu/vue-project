@@ -60,7 +60,7 @@
       <div><span>剧照</span></div>
     </div>
   </div>
-    <router-link to="/film/9898" tag="div" class="tobuy">购票</router-link>
+    <router-link :to="'/film/'+filmId+'/cinemas'" tag="div" class="tobuy">购票</router-link>
   </div>
 </template>
 
@@ -79,13 +79,15 @@ export default {
   data () {
     return {
       films: [],
-      premiereAt: ''
+      premiereAt: '',
+      filmId: ''
     }
   },
 
   methods: {
     getFilmDetail () {
       let filmId = this.$route.params.filmId;
+      this.filmId = filmId;
       axios.get('api/film/filmsDetail', {
         params: {
           filmId: filmId
@@ -324,11 +326,11 @@ export default {
 }
 
 .mintui {
-  font-family:"mintui" !important;
+  font-family:"mintui";
   font-size: px2rem(20);
 }
 
-.mintui-back:before{
+.mintui-back {
    font-size: px2rem(20);
 }
 </style>

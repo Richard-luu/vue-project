@@ -131,4 +131,35 @@ router.get('/filmsDetail',function(req ,res){
 
 });
 
+//获取影院信息
+router.get('/cinemas',function(req,res) {
+
+  MogoClient.connect(url,{ useNewUrlParser:true },function(err,client) {
+    if(err){
+      res.json({
+        code: 0,
+        msg: '网络异常，请稍后重试'
+      });
+    } else {
+      let db = client.db('film');
+
+      db.collection('cinemas').find().toArray(function(err,data){
+        if(err){
+          res.json({
+            code: 0,
+            msg: '出错啦'
+          });
+        } else {
+          res.json({
+            code: 1,
+            msg: '查询成功',
+            data: data
+          });
+        }
+        client.close();
+      })
+    }
+  })
+});
+
 module.exports = router;

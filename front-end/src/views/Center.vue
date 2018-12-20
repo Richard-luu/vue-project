@@ -5,7 +5,7 @@
         <i class="iconfont"></i>
       </div>
       <h2>
-        <router-link to="/login">立即登录</router-link>
+        <router-link to="/login" class="loginUser" tag="div">{{userName}}</router-link>
       </h2>
     </header>
 
@@ -24,8 +24,7 @@
 
       <div class="ul">
 
-        <!-- <router-link tag="div" class="card" to="/user/card"> -->
-        <div class="card">
+        <router-link tag="div" class="card" to="/login/maizuo">
           <div class="list">
             <i style="color: rgb(245, 89, 89);" class="iconfont3 icon-qia"></i>
             <span>卖座卡</span>
@@ -33,10 +32,9 @@
           <div class="list1">
             <i class="iconfont"></i>
           </div>
-        </div>
-        <!-- </router-link> -->
+        </router-link>
 
-        <div class="balace">
+        <router-link class="balace"  to="/login/money" tag="div">
           <div class="list">
             <i style="color: red;" class="iconfont4 icon-yue"></i>
             <span>余额</span>
@@ -45,9 +43,9 @@
             <p>￥0</p>
             <i class="iconfont"></i>
           </div>
-        </div>
+        </router-link>
 
-        <div class="set">
+        <router-link class="set" to="/login/setting" tag="div">
           <div class="list">
             <i style="color: rgb(15, 235, 52);" class="iconfont5 icon-shezhi"></i>
             <span>设置</span>
@@ -55,7 +53,7 @@
           <div class="list1">
             <i class="iconfont"></i>
           </div>
-        </div>
+        </router-link>
 
       </div>
 
@@ -65,7 +63,28 @@
 
 <script>
 export default {
-  name: 'Center'
+  name: 'Center',
+
+  data () {
+    return {
+      userName: ''
+    }
+  },
+
+  methods: {
+    getUsername () {
+      let str = localStorage.getItem('userName');
+      if (str) {
+        this.userName = str;
+      } else {
+        this.userName = '立即登录';
+      }
+    }
+  },
+
+  created () {
+    this.getUsername();
+  }
 }
 </script>
 
@@ -102,7 +121,7 @@ export default {
     align-self: center;
     margin-left: px2rem(20);
 
-    a {
+    div {
       color: white;
       text-decoration: none;
     }

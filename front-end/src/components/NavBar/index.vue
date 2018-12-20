@@ -32,6 +32,11 @@ export default {
           name: '影院'
         },
         {
+          id: 'tuan',
+          path: '/tuan',
+          name: '拼团'
+        },
+        {
           id: 'center',
           path: '/center',
           name: '我的'
@@ -68,35 +73,44 @@ export default {
       height: px2rem(22);
       background-size: 100%;
     }
+
+  &.nowPlaying {
+    .img {
+      background-image: url('./images/films.png');
+    }
+    &.z-act .img {
+      background-image: url('./images/films_on.png') !important;
+    }
   }
 
-    .nowPlaying {
-      .img {
-        background-image: url('./images/films.png');
-      }
-      .z-act .img {
-        background-image: url('./images/films_on.png');
-      }
+  &.cinemas {
+    .img {
+      background-image: url('./images/cinemas.png');
     }
-    .cinemas {
-      .img {
-        background-image: url('./images/cinemas.png');
-      }
-      .z-act .img {
-        background-image: url('./images/cinemas_on.png');
-      }
+    &.z-act .img {
+      background-image: url('./images/cinemas_on.png');
     }
-    .center {
-      .img {
-        background-image: url('./images/center.png');
-      }
-      .z-act .img {
-        background-image: url('./images/center_on.png');
-      }
-    }
+  }
 
-    .z-act {
-      color: #ff5f16;
+  &.tuan{
+    .img {
+      background-image: url('./images/uugroupon.png');
     }
+  }
+
+  &.center {
+    .img {
+      background-image: url('./images/center.png');
+    }
+    &.z-act .img {
+      background-image: url('./images/center_on.png');
+    }
+  }
+
+  &.z-act {
+    color: #ff5f16;
+  }
+
+ }
 }
 </style>

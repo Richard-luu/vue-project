@@ -14,6 +14,7 @@ import VueRouter from 'vue-router';
 // import Center from './views/Center.vue';
 import NowPaly from '../src/components/NowPlay/index.vue';
 import SoonPlay from '../src/components/SoonPlay/index.vue';
+import Login from './views/Login.vue';
 // import { Indicator } from 'mint-ui';
 
 // 插件安装
@@ -25,10 +26,6 @@ const router = new VueRouter({
       path: '/',
       component: () => import('./views/Home.vue'),
       children: [
-        {
-          path: '',
-          redirect: '/films/nowPlaying'
-        },
         {
           // 首页
           path: '/films',
@@ -57,10 +54,19 @@ const router = new VueRouter({
           component: () => import('./views/Cinema.vue')
         },
         {
+          // 拼团
+          path: '/tuan',
+          name: 'tuan',
+          component: () => import('./views/Tuan.vue')
+        },
+        {
           // 个人中心页
           path: '/center',
-          name: 'center',
           component: () => import('./views/Center.vue')
+        },
+        {
+          path: '',
+          redirect: '/films/nowPlaying'
         }
       ]
     },
@@ -77,10 +83,90 @@ const router = new VueRouter({
       }
     },
     {
+    // 电影详情页带ID到影院页面
+      path: '/film/:filmId/cinemas',
+      component: () => import('./views/Cinema.vue')
+    },
+    {
+      // 电影详情页带ID到购买
+      path: '/buy/:filmId/:cinemaId',
+      name: 'Buy',
+      component: () => import('./views/Buy.vue')
+    },
+    {
+      // 搜索
+      path: '/cinemas/search',
+      name: 'Search',
+      component: () => import('./views/Search.vue')
+    },
+    {
+      // 城市
+      path: '/city',
+      name: 'City',
+      component: () => import('./views/City.vue')
+    },
+    {
       // 登录页
       path: '/login',
-      name: 'login',
-      component: () => import('./views/Login.vue')
+      name: 'Login',
+      component: Login
+    },
+    {
+      // 卖座
+      path: '/login/maizuo',
+      name: 'Maizuo',
+      component: () => import('../src/components/Maizuo/index.vue'),
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('userName')) {
+          next();
+        } else {
+          next({
+            path: '/login',
+            name: 'Login',
+            redirect: '/login'
+          });
+        }
+      }
+    },
+    {
+      // 余额
+      path: '/login/money',
+      name: 'Money',
+      component: () => import('../src/components/Money/index.vue'),
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('userName')) {
+          next();
+        } else {
+          next({
+            path: '/login',
+            name: 'login',
+            redirect: '/login'
+          });
+        }
+      }
+    },
+    {
+      // 设置
+      path: '/login/setting',
+      name: 'Setting',
+      component: () => import('../src/components/Setting/index.vue'),
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('userName')) {
+          next();
+        } else {
+          next({
+            path: '/login',
+            name: 'login',
+            redirect: '/login'
+          });
+        }
+      }
+    },
+    {
+      // 个人中心页
+      path: '/center',
+      name: 'Center',
+      component: () => import('./views/Center.vue')
     },
     {
       path: '*',
