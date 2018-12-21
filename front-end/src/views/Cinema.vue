@@ -33,7 +33,7 @@
     <!-- 影院 -->
     <section class="all-cinemas">
         <ul>
-          <router-link tag="li" v-for="(item,index) in list" :key="index" :to="'/buy/'+filmId+'/'+item.cinemaId">
+          <router-link tag="li" v-for="(item,index) in list" :key="index" :to="'/buy/'+filmId+'/'+item.cinemaId+item.lowPrice">
             <a href="#">
               <div class="addressOne">
                 <span class="cinema-name">{{item.name}}</span>

@@ -97,7 +97,7 @@ export default {
         if (result.code === 1) {
           // this.films = result.data;
           // console.log(typeof result.data);
-          var a = result.data.map(function (item, index) {
+          let a = result.data.map(function (item, index) {
             return item
           });
           this.films.push(a[0]);

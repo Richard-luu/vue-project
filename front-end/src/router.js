@@ -89,9 +89,20 @@ const router = new VueRouter({
     },
     {
       // 电影详情页带ID到购买
-      path: '/buy/:filmId/:cinemaId',
+      path: '/buy/:filmId/:cinemaId+:lowPrice',
       name: 'Buy',
-      component: () => import('./views/Buy.vue')
+      component: () => import('./views/Buy.vue'),
+      beforeEnter (to, from, next) {
+        if (localStorage.getItem('userName')) {
+          next();
+        } else {
+          next({
+            path: '/login',
+            name: 'Login',
+            redirect: '/login'
+          });
+        }
+      }
     },
     {
       // 搜索
