@@ -73,12 +73,13 @@ export default {
 
   methods: {
     getUsername () {
-      let str = localStorage.getItem('userName');
-      if (str) {
-        this.userName = str;
-      } else {
-        this.userName = '立即登录';
-      }
+      // let str = localStorage.getItem('userName');
+      // if (str) {
+      //   this.userName = str;
+      // } else {
+      //   this.userName = '立即登录';
+      // }
+      return localStorage.getItem('userName') ? (this.userName = localStorage.getItem('userName')) : (this.userName = '立即登录');
     }
   },
 

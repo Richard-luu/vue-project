@@ -5,6 +5,7 @@
 import Vue from 'vue';//  引入vue
 import App from './App';//  引入App.vue
 import router from './router';
+import store from './store';
 
 //  引入mockjs，测试用的，上线时记得删
 // import './mockData';
@@ -16,6 +17,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App: App
   },

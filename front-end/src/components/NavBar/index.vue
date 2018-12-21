@@ -34,7 +34,7 @@ export default {
         {
           id: 'tuan',
           path: '/tuan',
-          name: '拼团'
+          name: '购物车'
         },
         {
           id: 'center',

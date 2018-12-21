@@ -64,7 +64,7 @@
           {{(lowPrice*filmsNum).toFixed(2)}}
         </span>
       </div>
-      <div class="to-pay">提交订单</div>
+      <router-link class="to-pay" tag="div" to="/films" @click.native="pay">提交订单</router-link>
     </section>
   </div>
 </template>
@@ -81,9 +81,10 @@ export default {
       films: [],
       premiereAt: '',
       cinemaId: '',
+      poster: '', // 海报传到localStorage用
       lowPrice: '',
       cinemaName: '',
-      cinemaInfo: [],
+      cinemaInfo: [], // 这个还没用
       filmsNum: 1 // 电影票数量
     }
   },
@@ -111,6 +112,7 @@ export default {
               return item
             });
             this.films.push(a[0]);
+            this.poster = a[0].poster;
             let da = new Date();
             let year = da.getFullYear();
             let month = da.getMonth();
@@ -157,6 +159,29 @@ export default {
     // 输入的数量
     inputNum (event) {
       this.filmsNum = event.data;
+    },
+
+    // 提交订单
+    pay () {
+      // 加到localStorage里面
+      let myCard = localStorage.getItem('filmsCard');
+      let myCardArr = JSON.parse(myCard);
+      if (myCardArr) {
+        myCardArr.forEach(item => {
+          if (item.filmId === this.filmId && item.cinemaName === this.cinemaName) {
+            item.filmsNum += this.filmsNum;
+            localStorage.setItem('filmsCard', JSON.stringify(myCardArr));
+          } else {
+            let strArr2 = {filmId: this.filmId, filmsName: this.films[0].name, premiereAt: this.premiereAt, lowPrice: this.lowPrice, cinemaName: this.cinemaName, filmsNum: this.filmsNum, poster: this.poster};
+            myCardArr.push(strArr2);
+            localStorage.setItem('filmsCard', JSON.stringify(myCardArr));
+          }
+        });
+      } else {
+        let strArr1 = [{filmId: this.filmId, filmsName: this.films[0].name, premiereAt: this.premiereAt, lowPrice: this.lowPrice, cinemaName: this.cinemaName, filmsNum: this.filmsNum, poster: this.poster}];
+        localStorage.setItem('filmsCard', JSON.stringify(strArr1));
+      }
+      alert('加入购物车成功');
     }
   },
 

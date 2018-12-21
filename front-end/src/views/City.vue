@@ -20,7 +20,7 @@
           <div class="recommed-city">
             <div class="gprsCity">
               <p>GPS定位你所在城市</p>
-              <div>定位失败</div>
+              <div>深圳</div>
             </div>
 
             <div class="hostCity">
